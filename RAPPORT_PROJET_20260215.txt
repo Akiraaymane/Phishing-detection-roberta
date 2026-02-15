@@ -3,7 +3,7 @@ RAPPORT DE PROJET - DETECTION DE PHISHING PAR DEEP LEARNING
 ================================================================================
 
 Date: 15/02/2026
-Auteurs: Groupe Data Science
+Auteurs: DHIMEN Aymane , EL ANSARI Mostapha
 Projet: Mini-Projet Docker & Deep Learning
 
 ================================================================================
@@ -333,5 +333,3 @@ Toutes les phases ont été complétées:
 FIN DU RAPPORT
 ================================================================================
 
-Rapport généré automatiquement le 15/02/2026 à 16:22
-Script: generate_report.py
