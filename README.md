@@ -333,7 +333,7 @@ See `requirements.txt` for complete list.
 - GitHub: [@Akiraaymane](https://github.com/Akiraaymane)
 
 **Mostapha EL ANSARI** - Data Engineer
--GitHub: [@mostaphaelansari](https://github.com/mostaphaelansari)
+- GitHub: [@mostaphaelansari](https://github.com/mostaphaelansari)
 
 ## License
 
@@ -355,7 +355,7 @@ Educational project - 2025-2026
   publisher = {GitHub},
   url = {https://github.com/Akiraaymane/Phishing-detection-roberta}
 }
-@misc{dhimen2025phishing,
+
 
 
 ```
