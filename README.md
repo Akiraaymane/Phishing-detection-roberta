@@ -332,7 +332,8 @@ See `requirements.txt` for complete list.
 **Aymane Dhimen** - Machine Learning Engineer
 - GitHub: [@Akiraaymane](https://github.com/Akiraaymane)
 
-**[Binôme Name]** - [Role]
+**Mostapha EL ANSARI** - Data Engineer
+-GitHub: [@mostaphaelansari](https://github.com/mostaphaelansari)
 
 ## License
 
@@ -348,19 +349,22 @@ Educational project - 2025-2026
 ## Citation
 ```bibtex
 @misc{dhimen2025phishing,
-  author = {Dhimen, Aymane},
+  author = {Dhimen, Aymane},{EL ansari, Mostapha}
   title = {Phishing Detection with RoBERTa Transformers},
   year = {2025},
   publisher = {GitHub},
   url = {https://github.com/Akiraaymane/Phishing-detection-roberta}
 }
+@misc{dhimen2025phishing,
+
+
 ```
 
 ## Contact
 
 For questions or collaboration:
 - GitHub Issues: [Open an issue](https://github.com/Akiraaymane/Phishing-detection-roberta/issues)
-- Email: [your.email@example.com]
+- Email: [aymanedh2211@gmail.com]
 
 ---
 
