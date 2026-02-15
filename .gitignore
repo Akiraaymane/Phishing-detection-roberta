@@ -1,0 +1,92 @@
+# =============================================
+# .gitignore - Projet Phishing Detection
+# =============================================
+
+# ============ ENVIRONNEMENTS VIRTUELS ============
+venv/
+env/
+ENV/
+.venv/
+*.pyc
+__pycache__/
+
+# ============ MODÈLES ENTRAÎNÉS (TRÈS LOURD !) ============
+roberta-sms/
+roberta-email/
+*.bin
+*.safetensors
+*.pth
+*.pt
+
+# ============ RÉSULTATS ET LOGS ============
+# Résultats de tests
+test_results_*/
+eda_results_*/
+cv_results_*/
+comparison_results/
+experiments/
+
+# Métriques JSON (trop nombreux)
+local_*_metrics.json
+docker_*_metrics.json
+local_*_metrics.txt
+docker_*_metrics.txt
+
+# Logs
+*.log
+workflow_log_*.txt
+logs/
+
+# Résultats temporaires
+results_temp/
+mlops_config/
+model_versions/
+
+# ============ DONNÉES (SI TROP LOURDES) ============
+# Décommenter ces lignes si vos datasets sont trop gros (>100 MB)
+# sms_spam.csv
+# email_dataset.csv
+
+# ============ IDE ET ÉDITEURS ============
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============ PYTHON ============
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ============ TESTS ============
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ============ JUPYTER ============
+.ipynb_checkpoints/
+*.ipynb
+
+# ============ DOCKER (fichiers générés) ============
+# On garde les Dockerfiles mais pas les volumes
+.docker/
+
+# ============ DOCUMENTATION GÉNÉRÉE ============
+*.pdf
+*.docx
+# Garder les .md (documentation importante)
+# !README.md
+# !QUICKSTART.md
+
+# ============ DIVERS ============
+*.bak
+*.tmp
+*.temp
+.cache/

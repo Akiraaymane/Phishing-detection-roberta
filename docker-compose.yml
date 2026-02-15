@@ -1,0 +1,81 @@
+
+services:
+  # ========================================
+  # ENTRAÎNEMENT SMS
+  # ========================================
+  train-sms:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    container_name: train-sms
+    volumes:
+      - ./:/app
+    environment:
+      - DOCKER_ENV=docker
+    command: python train.py --data_type sms --data_path sms_spam.csv --output_dir roberta-sms --epochs 1 --batch_size 8
+
+  # ========================================
+  # TEST SMS
+  # ========================================
+  test-sms:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    container_name: test-sms
+    volumes:
+      - ./:/app
+    environment:
+      - DOCKER_ENV=docker
+    command: python test.py --data_type sms --data_path sms_spam.csv --model_path roberta-sms
+    depends_on:
+      - train-sms
+
+  # ========================================
+  # ENTRAÎNEMENT EMAIL
+  # ========================================
+  train-email:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    container_name: train-email
+    volumes:
+      - ./:/app
+    environment:
+      - DOCKER_ENV=docker
+    command: python train.py --data_type email --data_path email_dataset.csv --output_dir roberta-email --epochs 1 --batch_size 8
+    depends_on:
+      - train-sms
+
+  # ========================================
+  # TEST EMAIL
+  # ========================================
+  test-email:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    container_name: test-email
+    volumes:
+      - ./:/app
+    environment:
+      - DOCKER_ENV=docker
+    command: python test.py --data_type email --data_path email_dataset.csv --model_path roberta-email
+    depends_on:
+      - train-email
+
+  # ========================================
+  # API
+  # ========================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: phishing-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./roberta-sms:/app/roberta-sms:ro
+      - ./roberta-email:/app/roberta-email:ro
+    depends_on:
+      - train-sms
+      - train-email
+    restart: unless-stopped
