@@ -208,8 +208,8 @@ class ReportGenerator:
     def _write_comparison_data(self, f):
         """Charge et affiche les données de comparaison"""
         for data_type in self.data_types:
-            local_file = f"local_{data_type}_metrics.json"
-            docker_file = f"docker_{data_type}_metrics.json"
+            local_file = os.path.join('results', f"local_{data_type}_metrics.json")
+            docker_file = os.path.join('results', f"docker_{data_type}_metrics.json")
             
             if os.path.exists(local_file):
                 with open(local_file, 'r') as jf:
@@ -238,7 +238,7 @@ class ReportGenerator:
         f.write("-"*80 + "\n")
         
         for data_type in self.data_types:
-            test_results_file = f"test_results_{data_type}/test_results.json"
+            test_results_file = os.path.join('results', f"test_results_{data_type}", "test_results.json")
             
             if os.path.exists(test_results_file):
                 with open(test_results_file, 'r') as jf:
@@ -266,7 +266,7 @@ class ReportGenerator:
         f.write("5.3 Validation Croisée\n")
         f.write("-"*80 + "\n")
         f.write("Méthode: Stratified K-Fold (K=5)\n")
-        f.write("Résultats disponibles dans: cv_results_{data_type}/\n\n\n")
+        f.write("Résultats disponibles dans: results/cv_results_{data_type}/\n\n\n")
     
     def _write_section_6_comparaison(self, f):
         """Section 6: Comparaison"""

@@ -25,7 +25,7 @@ from sklearn.metrics import (
 )
 import torch
 from transformers import RobertaTokenizer, RobertaForSequenceClassification
-from preprocessing import TextPreprocessor, load_sms_data, load_email_data, split_data
+from src.preprocessing import TextPreprocessor, load_sms_data, load_email_data, split_data
 
 
 class ModelTester:
@@ -166,7 +166,7 @@ class ModelTester:
     
     def _generate_plots(self, cm, fpr, tpr, roc_auc, results):
         """Génère les visualisations"""
-        output_dir = f'test_results_{self.data_type}'
+        output_dir = os.path.join('results', f'test_results_{self.data_type}')
         os.makedirs(output_dir, exist_ok=True)
         
         # 1. Matrice de confusion
@@ -248,7 +248,7 @@ class ModelTester:
         print(f"False Negatives: {len(false_negatives)} (Phishing predicted as Legitimate)")
         
         # Sauvegarder les erreurs
-        output_dir = f'test_results_{self.data_type}'
+        output_dir = os.path.join('results', f'test_results_{self.data_type}')
         errors_file = f'{output_dir}/errors_analysis.csv'
         errors[['text_clean', 'label', 'prediction']].to_csv(errors_file, index=False)
         print(f"\nErrors saved to {errors_file}")
@@ -301,7 +301,7 @@ def main():
     tester.analyze_errors(test_df, predictions)
     
     # Sauvegarder les résultats
-    output_dir = f'test_results_{args.data_type}'
+    output_dir = os.path.join('results', f'test_results_{args.data_type}')
     results_file = f'{output_dir}/test_results.json'
     with open(results_file, 'w') as f:
         json.dump(results, f, indent=4)

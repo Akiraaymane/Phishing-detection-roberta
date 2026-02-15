@@ -1,4 +1,3 @@
-
 services:
   # ========================================
   # ENTRAÎNEMENT SMS
@@ -6,13 +5,13 @@ services:
   train-sms:
     build:
       context: .
-      dockerfile: Dockerfile.train
+      dockerfile: docker/Dockerfile.train
     container_name: train-sms
     volumes:
       - ./:/app
     environment:
       - DOCKER_ENV=docker
-    command: python train.py --data_type sms --data_path sms_spam.csv --output_dir roberta-sms --epochs 1 --batch_size 8
+    command: python src/training/train.py --data_type sms --data_path data/sms_spam.csv --output_dir models/roberta-sms --epochs 1 --batch_size 8
 
   # ========================================
   # TEST SMS
@@ -20,13 +19,13 @@ services:
   test-sms:
     build:
       context: .
-      dockerfile: Dockerfile.train
+      dockerfile: docker/Dockerfile.train
     container_name: test-sms
     volumes:
       - ./:/app
     environment:
       - DOCKER_ENV=docker
-    command: python test.py --data_type sms --data_path sms_spam.csv --model_path roberta-sms
+    command: python src/training/test.py --data_type sms --data_path data/sms_spam.csv --model_path models/roberta-sms
     depends_on:
       - train-sms
 
@@ -36,13 +35,13 @@ services:
   train-email:
     build:
       context: .
-      dockerfile: Dockerfile.train
+      dockerfile: docker/Dockerfile.train
     container_name: train-email
     volumes:
       - ./:/app
     environment:
       - DOCKER_ENV=docker
-    command: python train.py --data_type email --data_path email_dataset.csv --output_dir roberta-email --epochs 1 --batch_size 8
+    command: python src/training/train.py --data_type email --data_path data/email_dataset.csv --output_dir models/roberta-email --epochs 1 --batch_size 8
     depends_on:
       - train-sms
 
@@ -52,13 +51,13 @@ services:
   test-email:
     build:
       context: .
-      dockerfile: Dockerfile.train
+      dockerfile: docker/Dockerfile.train
     container_name: test-email
     volumes:
       - ./:/app
     environment:
       - DOCKER_ENV=docker
-    command: python test.py --data_type email --data_path email_dataset.csv --model_path roberta-email
+    command: python src/training/test.py --data_type email --data_path data/email_dataset.csv --model_path models/roberta-email
     depends_on:
       - train-email
 
@@ -68,13 +67,13 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: docker/Dockerfile.api
     container_name: phishing-api
     ports:
       - "8000:8000"
     volumes:
-      - ./roberta-sms:/app/roberta-sms:ro
-      - ./roberta-email:/app/roberta-email:ro
+      - ./models/roberta-sms:/app/models/roberta-sms:ro
+      - ./models/roberta-email:/app/models/roberta-email:ro
     depends_on:
       - train-sms
       - train-email

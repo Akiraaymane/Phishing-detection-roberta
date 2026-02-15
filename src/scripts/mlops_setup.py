@@ -27,8 +27,8 @@ class MLOpsConfig:
             },
             'data': {
                 'sources': {
-                    'sms': 'sms_spam.csv',
-                    'email': 'email_dataset.csv'
+                    'sms': os.path.join('data', 'sms_spam.csv'),
+                    'email': os.path.join('data', 'email_dataset.csv')
                 },
                 'preprocessing': {
                     'lowercase': True,

@@ -5,15 +5,13 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y gcc g++ && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
+RUN pip install --no-cache-dir torch>=2.0.0 --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 RUN python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt')"
 
-COPY preprocessing.py app.py ./
-COPY roberta-sms ./roberta-sms
-COPY roberta-email ./roberta-email
-
-EXPOSE 8000
+COPY . .
 
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "src/training/train.py"]

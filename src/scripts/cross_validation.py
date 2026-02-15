@@ -13,7 +13,7 @@ from datasets import Dataset
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import json
 import os
-from preprocessing import TextPreprocessor, load_sms_data, load_email_data
+from src.preprocessing import TextPreprocessor, load_sms_data, load_email_data
 
 
 def compute_metrics(pred):
@@ -124,7 +124,7 @@ class CrossValidator:
         
         # Arguments d'entraînement
         training_args = TrainingArguments(
-            output_dir=f'./cv_results_temp/fold_{fold}',
+            output_dir=os.path.join('results', f'cv_results_temp', f'fold_{fold}'),
             num_train_epochs=self.epochs,
             per_device_train_batch_size=self.batch_size,
             per_device_eval_batch_size=self.batch_size,
@@ -190,7 +190,7 @@ class CrossValidator:
             print(f"{metric.capitalize():12s}: {mean:.4f} (+/- {std:.4f})")
         
         # Sauvegarder les résultats
-        output_dir = f'cv_results_{self.data_type}'
+        output_dir = os.path.join('results', f'cv_results_{self.data_type}')
         os.makedirs(output_dir, exist_ok=True)
         
         results_file = f'{output_dir}/cross_validation_results.json'
@@ -215,7 +215,7 @@ class CrossValidator:
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
         
-        output_dir = f'cv_results_{self.data_type}'
+        output_dir = os.path.join('results', f'cv_results_{self.data_type}')
         
         metrics = ['accuracy', 'f1', 'precision', 'recall']
         folds = [r['fold'] for r in fold_results]

@@ -15,8 +15,8 @@ class WorkflowAutomation:
     
     def __init__(self, data_type='sms'):
         self.data_type = data_type
-        self.data_path = f'{data_type}_spam.csv' if data_type == 'sms' else 'email_dataset.csv'
-        self.model_dir = f'roberta-{data_type}'
+        self.data_path = os.path.join('data', f'{data_type}_spam.csv') if data_type == 'sms' else os.path.join('data', 'email_dataset.csv')
+        self.model_dir = os.path.join('models', f'roberta-{data_type}')
         self.start_time = None
         self.log_file = f'workflow_log_{data_type}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.txt'
     
@@ -54,7 +54,7 @@ class WorkflowAutomation:
         self.log("STEP 1: EXPLORATORY DATA ANALYSIS")
         self.log("="*60)
         
-        command = f"python eda_analysis.py --data_type {self.data_type} --data_path {self.data_path}"
+        command = f"python src/scripts/eda_analysis.py --data_type {self.data_type} --data_path {self.data_path}"
         return self.run_command(command, "EDA Analysis")
     
     def step2_train_local(self):
@@ -63,7 +63,7 @@ class WorkflowAutomation:
         self.log("STEP 2: LOCAL TRAINING")
         self.log("="*60)
         
-        command = f"python train.py --data_type {self.data_type} --data_path {self.data_path} --output_dir {self.model_dir} --epochs 2 --batch_size 16"
+        command = f"python src/training/train.py --data_type {self.data_type} --data_path {self.data_path} --output_dir {self.model_dir} --epochs 2 --batch_size 16"
         return self.run_command(command, "Local Training")
     
     def step3_test_model(self):
@@ -76,7 +76,7 @@ class WorkflowAutomation:
             self.log(f"Model directory {self.model_dir} not found. Skipping testing.")
             return False
         
-        command = f"python test.py --data_type {self.data_type} --data_path {self.data_path} --model_path {self.model_dir}"
+        command = f"python src/training/test.py --data_type {self.data_type} --data_path {self.data_path} --model_path {self.model_dir}"
         return self.run_command(command, "Model Testing")
     
     def step4_cross_validation(self, n_splits=3):
@@ -85,7 +85,7 @@ class WorkflowAutomation:
         self.log(f"STEP 4: CROSS-VALIDATION ({n_splits} folds)")
         self.log("="*60)
         
-        command = f"python cross_validation.py --data_type {self.data_type} --data_path {self.data_path} --n_splits {n_splits} --epochs 1 --batch_size 16"
+        command = f"python src/scripts/cross_validation.py --data_type {self.data_type} --data_path {self.data_path} --n_splits {n_splits} --epochs 1 --batch_size 16"
         return self.run_command(command, f"Cross-Validation ({n_splits} folds)")
     
     def step5_train_docker(self):
@@ -104,8 +104,8 @@ class WorkflowAutomation:
         self.log("STEP 6: ENVIRONMENT COMPARISON")
         self.log("="*60)
         
-        local_metrics = f"local_{self.data_type}_metrics.json"
-        docker_metrics = f"docker_{self.data_type}_metrics.json"
+        local_metrics = os.path.join('results', f"local_{self.data_type}_metrics.json")
+        docker_metrics = os.path.join('results', f"docker_{self.data_type}_metrics.json")
         
         if not os.path.exists(local_metrics):
             self.log(f"Local metrics not found: {local_metrics}")
@@ -115,7 +115,8 @@ class WorkflowAutomation:
             self.log(f"Docker metrics not found: {docker_metrics}")
             return False
         
-        command = f"python compare_environments.py --data_type {self.data_type}"
+        
+        command = f"python src/scripts/compare_environments.py --data_type {self.data_type}"
         return self.run_command(command, "Environment Comparison")
     
     def step7_test_api(self):
@@ -124,7 +125,7 @@ class WorkflowAutomation:
         self.log("STEP 7: API TESTING")
         self.log("="*60)
         
-        command = "pytest test_api.py -v"
+        command = "pytest src/api/test_api.py -v"
         return self.run_command(command, "API Unit Tests")
     
     def run_full_workflow(self, skip_docker=False, skip_cv=False):

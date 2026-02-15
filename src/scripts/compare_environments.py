@@ -16,13 +16,13 @@ class EnvironmentComparator:
     """Compare les résultats d'entraînement entre environnements local et Docker"""
     
     def __init__(self):
-        self.output_dir = 'comparison_results'
+        self.output_dir = os.path.join('results', 'comparison_results')
         os.makedirs(self.output_dir, exist_ok=True)
         self.comparison_data = []
     
     def load_metrics(self, env_type, data_type):
         """Charge les métriques depuis les fichiers JSON"""
-        filename = f"{env_type}_{data_type}_metrics.json"
+        filename = os.path.join('results', f"{env_type}_{data_type}_metrics.json")
         
         if not os.path.exists(filename):
             print(f"Warning: {filename} not found")
@@ -209,8 +209,8 @@ class EnvironmentComparator:
         
         # Détecter les types de données disponibles
         for data_type in ['sms', 'email']:
-            local_file = f"local_{data_type}_metrics.json"
-            docker_file = f"docker_{data_type}_metrics.json"
+            local_file = os.path.join('results', f"local_{data_type}_metrics.json")
+            docker_file = os.path.join('results', f"docker_{data_type}_metrics.json")
             if os.path.exists(local_file) or os.path.exists(docker_file):
                 data_types.append(data_type)
         

@@ -12,7 +12,7 @@ from transformers import (
 )
 from datasets import Dataset
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-from preprocessing import TextPreprocessor, load_sms_data, load_email_data, split_data
+from src.preprocessing import TextPreprocessor, load_sms_data, load_email_data, split_data
 
 def compute_metrics(pred):
     """Calcule les métriques d'évaluation"""
@@ -183,13 +183,15 @@ def main():
     }
     
     # Sauvegarder les métriques en JSON
-    filename_json = f"{env_type}_{args.data_type}_metrics.json"
+    results_dir = 'results'
+    os.makedirs(results_dir, exist_ok=True)
+    filename_json = os.path.join(results_dir, f"{env_type}_{args.data_type}_metrics.json")
     with open(filename_json, 'w') as f:
         json.dump(metrics, f, indent=4)
     print(f"Metrics saved to {filename_json}")
     
     # Sauvegarder les métriques en TXT
-    filename_txt = f"{env_type}_{args.data_type}_metrics.txt"
+    filename_txt = os.path.join(results_dir, f"{env_type}_{args.data_type}_metrics.txt")
     with open(filename_txt, 'w') as f:
         f.write("="*60 + "\n")
         f.write(f"PHISHING DETECTION TRAINING RESULTS - {env_type.upper()}\n")

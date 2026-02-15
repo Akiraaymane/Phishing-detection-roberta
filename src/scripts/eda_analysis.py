@@ -14,7 +14,7 @@ import seaborn as sns
 from wordcloud import WordCloud
 from collections import Counter
 import re
-from preprocessing import TextPreprocessor, load_sms_data, load_email_data
+from src.preprocessing import TextPreprocessor, load_sms_data, load_email_data
 
 
 class EDAAnalyzer:

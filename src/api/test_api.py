@@ -9,10 +9,10 @@ import pytest
 from fastapi.testclient import TestClient
 import json
 
-# Ajouter le répertoire parent au path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Ajouter le répertoire racine du projet au path pour permettre les imports de src
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from app import app
+from src.api.app import app
 
 client = TestClient(app)
 

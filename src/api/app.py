@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import torch
 from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import os
-from preprocessing import TextPreprocessor
+from src.preprocessing import TextPreprocessor
 
 app = FastAPI(title="Phishing Detection API")
 
@@ -27,7 +27,7 @@ class PredictionResponse(BaseModel):
 async def load_models():
     print("Loading models...")
     for model_type in ['sms', 'email']:
-        model_path = f'./roberta-{model_type}'
+        model_path = f'models/roberta-{model_type}'
         if os.path.exists(model_path):
             try:
                 tokenizers[model_type] = RobertaTokenizer.from_pretrained(model_path)
